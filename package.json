@@ -1,0 +1,20 @@
+{
+  "name": "mongo-perf-test",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Sajib Sarkar <thebapi@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "7.0.0",
+    "faker": "4.1.0",
+    "lodash": "4.17.11",
+    "mongoose": "5.5.0",
+    "neo-async": "2.6.0",
+    "stack-trace": "0.0.10"
+  }
+}
