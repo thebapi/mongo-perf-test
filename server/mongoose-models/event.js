@@ -9,10 +9,12 @@ const eventSchema = new mongoose.Schema({
     "name" : { type: String, index: true },
     "customer_id" :{ type: ObjectId, ref: 'customer' },
     "account" : { type: ObjectId },
+    "company_id" : { type: ObjectId,  ref: 'company', index: true  },
     "type" : { type: String },
     "submitted_at" : { type: Date, index: true },
 });
 
+eventSchema.index({company_id: 1, name: 1});
 eventSchema.index({name: 1, customer_id: 1});
 eventSchema.index({name: 1, account: 1});
 

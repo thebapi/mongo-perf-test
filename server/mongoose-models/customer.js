@@ -8,7 +8,7 @@ const customerSchema = new mongoose.Schema({
     "email" : { type: String, index: true },
     "phone" : { type: String },
     "name" : { type: String },
-    "companies": [{type: ObjectId, ref: 'company'}],
+    "companies": [{type: ObjectId, ref: 'company', index: true}],
     "custom_attributes" : {
         "onboarding1" :  { type: Boolean },
         "onboarding2" :  { type: Boolean },

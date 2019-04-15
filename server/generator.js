@@ -7,8 +7,8 @@ const Company = require('./mongoose-models/company');
 const Customer = require('./mongoose-models/customer');
 const Event  = require('./mongoose-models/event');
 
-const defaultNumberOfCompany = 1;
-const defaultNumberOfCustomer = 1000;
+const defaultNumberOfCompany = 40;
+const defaultNumberOfCustomer = 500;
 const defaultNumberOfEvent = 500;
 
 const eventsNames = ['client_order', 'client_search', 'client_order_cancel', 'reports.key_action_clicked', 'reports.edit_action_clicked'];
@@ -72,6 +72,7 @@ module.exports.generateCustomerData  = async function (_companyData, size = defa
         for (let i=0;i < size; i++){
             let user_id = lastUserId++;
             let  custData= {
+                "_id" : new ObjectId(),
                 "buckets" : [],
                 "user_id" : _.padStart(user_id.toString(), 6, '0'),
                 "email" : faker.name.findName(),
@@ -90,14 +91,17 @@ module.exports.generateCustomerData  = async function (_companyData, size = defa
                 "account" : _companyData.account,
 
             };
-            let  _custData  =  await Customer.create(custData);
+            //allCustomerData.push(custData);
+             await Customer.create(custData);
+            await module.exports.generateEventData(_companyData, custData);
             //console.log('_custData', _custData);
-            await module.exports.generateEventData(_companyData, _custData);
-            console.log('Event data added  for customer ', _companyData.user_id, ' ###  ',  i);
+            console.log('Event data added  for customer ', _companyData.user_id, ' ###  ', i);
+
         }
         return true;
     } catch(ex){
-        return ex;
+        console.log(ex);
+        return new Error(ex);
     }
 };
 
@@ -107,21 +111,22 @@ module.exports.generateEventData  = async function (_companyData, _custData, siz
 
     try  {
         let  allEventData = [];
-        for (let i=0;i <= size; i++){
-            let  eventData= {
-                "user_id" : _custData.user_id,
-                "email" : _custData.email,
-                "created_at" : faker.date.past(),
-                "name" : eventsNames[randomInt(0,  4)],
-                "customer_id" : _custData._id,
-                "account" : _custData.account,
-                "type" : "customer",
-                "submitted_at" : faker.date.recent(),
+            for (let i = 0; i <= size; i++) {
+                let eventData = {
+                    "user_id": _custData.user_id,
+                    "email": _custData.email,
+                    "created_at": faker.date.past(),
+                    "name": eventsNames[randomInt(0, 4)],
+                    "customer_id": _custData._id,
+                    "account": _custData.account,
+                    "company_id": _companyData._id,
+                    "type": "customer",
+                    "submitted_at": faker.date.recent(),
 
-            };
-            allEventData.push(eventData);
-           // console.log('_eventData', _eventData);
-        }
+                };
+                allEventData.push(eventData);
+                // console.log('_eventData', _eventData);
+            }
         await Event.insertMany(allEventData);
         allEventData = undefined;
         return true;
