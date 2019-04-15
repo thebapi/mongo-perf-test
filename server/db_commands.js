@@ -15,6 +15,15 @@ db.events.createIndex({
 db.customers.reIndex();
 db.events.reIndex();
 
+
+db.companies.aggregate([
+    {'$match': {'status': 'active'}},
+    {
+        $lookup: {
+            from: "events", // field in the items collection
+            as: "event"
+        }
+    }])
 db.companies.aggregate([
     {'$match': {'status': 'active'}},
     {'$project': {'_id': 1, 'name': 1,'signed_up_at':1, 'email': 1}},
@@ -42,7 +51,7 @@ db.companies.aggregate([
         }
     },
     {'$project': {'name': 1, 'email': 1,  'signed_up_at': 1, 'event_count': '$event.count', 'event_name': '$event.name'}},
-    {'$match': { 'event': {'event_count': {'$gte': 0 } }}},
+    {'$match': { 'event_count': {'$gte': 0 } }},
     {
         "$facet": {
             "count": [
@@ -112,7 +121,7 @@ db.companies.aggregate([
         }
     },
     {'$project': {'name': 1, 'email': 1,  'signed_up_at': 1, 'event_count': '$event.count', 'event_name': '$event.name'}},
-    {'$match': { 'event': {'event_count': { '$or': [{'$exists': false, '$lt': 10 }]}}}},
+    {'$match': { 'event_count': { '$or': [{'$exists': false, '$lt': 10 }]}}},
     {
         "$facet": {
             "count": [

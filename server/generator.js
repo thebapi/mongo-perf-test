@@ -7,9 +7,9 @@ const Company = require('./mongoose-models/company');
 const Customer = require('./mongoose-models/customer');
 const Event  = require('./mongoose-models/event');
 
-const defaultNumberOfCompany = 40;
+const defaultNumberOfCompany = 10;
 const defaultNumberOfCustomer = 500;
-const defaultNumberOfEvent = 500;
+const defaultNumberOfEvent = 15000;
 
 const eventsNames = ['client_order', 'client_search', 'client_order_cancel', 'reports.key_action_clicked', 'reports.edit_action_clicked'];
 var  lastUserId = 0;
