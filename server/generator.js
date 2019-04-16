@@ -9,7 +9,7 @@ const Event  = require('./mongoose-models/event');
 
 const defaultNumberOfCompany = 10;
 const defaultNumberOfCustomer = 500;
-const defaultNumberOfEvent = 15000;
+const defaultNumberOfEvent = 200;
 
 const eventsNames = ['client_order', 'client_search', 'client_order_cancel', 'reports.key_action_clicked', 'reports.edit_action_clicked'];
 var  lastUserId = 0;
@@ -119,7 +119,7 @@ module.exports.generateEventData  = async function (_companyData, _custData, siz
                     "name": eventsNames[randomInt(0, 4)],
                     "customer_id": _custData._id,
                     "account": _custData.account,
-                    "company_id": _companyData._id,
+                    "companies": [_companyData._id],
                     "type": "customer",
                     "submitted_at": faker.date.recent(),
 

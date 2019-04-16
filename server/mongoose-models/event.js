@@ -5,19 +5,17 @@ const ObjectId = schema.Types.ObjectId;
 const eventSchema = new mongoose.Schema({
     "user_id" : { type: String},
     "email" : { type: String },
-    "created_at" : { type: Date, index: true },
+    "created_at" : { type: Date },
     "name" : { type: String, index: true },
     "customer_id" :{ type: ObjectId, ref: 'customer' },
     "account" : { type: ObjectId },
-    "company_id" : { type: ObjectId,  ref: 'company', index: true  },
+    "companies" : [{ type: ObjectId,  ref: 'company', index: true }],
     "type" : { type: String },
-    "submitted_at" : { type: Date, index: true },
+    "submitted_at" : { type: Date },
 });
 
-eventSchema.index({company_id: 1, name: 1});
+eventSchema.index({'companies': 1, name: 1});
 eventSchema.index({name: 1, customer_id: 1});
-eventSchema.index({name: 1, account: 1});
-
 
 const Event = mongoose.model('event', eventSchema);
 module.exports = Event;
